@@ -1,0 +1,14 @@
+.md-expander {
+  background: '{{background-hue-1}}';
+
+  .md-expander-collapsed {
+    .md-title {
+      color: '{{foreground-1}}';
+    }
+
+    .md-expander-icon svg {
+      fill: '{{foreground-3}}';
+    }
+
+  }
+}
