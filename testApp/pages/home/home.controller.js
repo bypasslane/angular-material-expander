@@ -3,9 +3,14 @@ angular
   .controller('HomeController', HomeController);
 
 
-function HomeController($scope) {
+function HomeController($scope, $mdExpander) {
   $scope.isExpanded = false;
   $scope.toggle = function () {
     $scope.isExpanded = !$scope.isExpanded;
   };
+
+
+  $mdExpander().waitFor('expanderId').then(function (instance) {
+    instance.expand();
+  });
 }

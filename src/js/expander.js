@@ -14,6 +14,9 @@ angular
 function mdExpanderDirective($mdTheming, $parse) {
   var directive = {
     restrict: 'E',
+    // scope: {
+    //   mdExpanded: '?=mdExpanded'
+    // }
     compile: compile,
     controller: ExpanderController
   };
@@ -38,6 +41,7 @@ function mdExpanderDirective($mdTheming, $parse) {
     var vm = this;
 
     var expandedCtrl;
+    var expandedGetter;
     var collapsed = $element[0].querySelector('md-expander-collapsed');
     var expanded = $element[0].querySelector('md-expander-expanded');
     if (expanded === null) {
@@ -54,13 +58,13 @@ function mdExpanderDirective($mdTheming, $parse) {
 
 
     if ($attrs.mdExpanded !== undefined) {
-      var expandedGetter = $parse($attrs.mdExpanded);
+      expandedGetter = $parse($attrs.mdExpanded);
       $scope.$watch(function () { return expandedGetter($scope); }, function (newValue) {
         if (newValue === _isExpanded) { return; }
         if (newValue === true) {
-          expand();
+          expand(true);
         } else {
-          collapse();
+          collapse(true);
         }
       });
     }
@@ -83,19 +87,24 @@ function mdExpanderDirective($mdTheming, $parse) {
       expandedCtrl = ctrl;
     }
 
-    function expand() {
+    function expand(noUpdate) {
       _isExpanded = true;
       toggle(_isExpanded);
     }
 
-    function collapse() {
+    function collapse(noUpdate) {
       _isExpanded = false;
       toggle(_isExpanded);
     }
 
-    function toggle(value) {
+    function toggle(value, noUpdate) {
+      noUpdate = noUpdate || false;
       $element.toggleClass('md-expanded', value);
       expandedCtrl.toggle(value);
+
+      if (noUpdate === false && expandedGetter) {
+        expandedGetter.assign($scope, value);
+      }
     }
 
     function isExpanded() {
