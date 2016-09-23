@@ -49,6 +49,12 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     var _isExpanded = false;
+    var listItemContainer = $element.parent();
+    if (listItemContainer.hasClass('md-list-item-inner')) {
+      listItemContainer.parent().addClass('layout-wrap');
+      listItemContainer.parent().append($element);
+      $element.css('width', '100%');
+    }
 
     vm.height = $attrs.height;
     vm.expand = expand;

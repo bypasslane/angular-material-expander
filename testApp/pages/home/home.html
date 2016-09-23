@@ -1,7 +1,8 @@
 <md-expander>
   <md-expander-collapsed>
-    <div class="md-title">header</div>
     <md-expander-arrow></md-expander-arrow>
+    <div class="md-title">header</div>
+    <!-- <md-expander-arrow></md-expander-arrow> -->
   </md-expander-collapsed>
   <md-expander-expanded>
     <div class="md-expander-content">
@@ -17,7 +18,7 @@
 
 
 <md-button ng-click="toggle()">Toggle</md-button>
-<md-expander md-expanded="isExpanded" md-component-id="expanderId">
+<!-- <md-expander md-expanded="isExpanded" md-component-id="expanderId">
   <md-expander-expanded>
     <div class="md-expander-content">
       <h3>What</h3>
@@ -26,4 +27,23 @@
       <p>content</p>
     </div>
   </md-expander-expanded>
-</md-expander>
+</md-expander> -->
+
+
+<md-list>
+  <md-list-item ng-repeat="item in list">
+    <p>{{item.name}}</p>
+    <span flex></span>
+    <md-switch ng-model="item.open"></md-switch>
+    <md-expander md-expanded="item.open">
+      <md-expander-expanded>
+        <div class="md-expander-content">
+          <h3>What</h3>
+          <p>content</p>
+          <h3>What</h3>
+          <p>content</p>
+        </div>
+      </md-expander-expanded>
+    </md-expander>
+  </md-list-item>
+</md-list>

@@ -13,4 +13,6 @@ function HomeController($scope, $mdExpander) {
   $mdExpander().waitFor('expanderId').then(function (instance) {
     instance.expand();
   });
+
+  $scope.list = [{name: 'one', open: false}, {name: 'two', open: false}];
 }
