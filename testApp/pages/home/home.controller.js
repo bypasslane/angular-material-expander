@@ -14,5 +14,5 @@ function HomeController($scope, $mdExpander) {
     instance.expand();
   });
 
-  $scope.list = [{name: 'one', open: false}, {name: 'two', open: false}];
+  $scope.list = [{name: 'one', open: true}, {name: 'two', open: false}];
 }
