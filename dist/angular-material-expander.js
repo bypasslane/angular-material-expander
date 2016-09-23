@@ -75,6 +75,12 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     var _isExpanded = false;
+    var listItemContainer = $element.parent();
+    if (listItemContainer.hasClass('md-list-item-inner')) {
+      listItemContainer.parent().addClass('layout-wrap');
+      listItemContainer.parent().append($element);
+      $element.css('width', '100%');
+    }
 
     vm.height = $attrs.height;
     vm.expand = expand;
@@ -84,14 +90,17 @@ function mdExpanderDirective($mdTheming, $parse) {
 
 
     if ($attrs.mdExpanded !== undefined) {
+      var expandedInited = false;
       expandedGetter = $parse($attrs.mdExpanded);
       $scope.$watch(function () { return expandedGetter($scope); }, function (newValue) {
         if (newValue === _isExpanded) { return; }
+        var animate = expandedInited;
         if (newValue === true) {
-          expand(true);
+          expand(animate, true);
         } else {
-          collapse(true);
+          collapse(animate, true);
         }
+        expandedInited = true;
       });
     }
 
@@ -113,18 +122,19 @@ function mdExpanderDirective($mdTheming, $parse) {
       expandedCtrl = ctrl;
     }
 
-    function expand(noUpdate) {
+    function expand(animate, noUpdate) {
       _isExpanded = true;
-      toggle(_isExpanded);
+      toggle(_isExpanded, animate, noUpdate);
     }
 
-    function collapse(noUpdate) {
+    function collapse(animate, noUpdate) {
       _isExpanded = false;
-      toggle(_isExpanded);
+      toggle(_isExpanded, animate, noUpdate);
     }
 
-    function toggle(value, noUpdate) {
+    function toggle(value, animate, noUpdate) {
       noUpdate = noUpdate || false;
+      $element.toggleClass('md-no-animation', animate === false);
       $element.toggleClass('md-expanded', value);
       expandedCtrl.toggle(value);
 
