@@ -52,10 +52,6 @@ function mdExpanderDirective($mdTheming, $parse) {
       tElement.css('width', tAttrs.width.replace('px', '') + 'px');
     }
 
-    if (tAttrs.mdComponentId === undefined) {
-      tElement.attr('md-component-id', '_expander_id_'+(uid++));
-    }
-
     return function postLink(scope, element, attr) {
       $mdTheming(element);
     };
@@ -84,10 +80,20 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     vm.height = $attrs.height;
-    vm.open = open;
-    vm.close = close;
+    vm.show = show;
+    vm.hide = hide;
     vm.isOpen = isOpen;
     vm.registerExpanded = registerExpanded;
+
+
+    if ($attrs.mdComponentId === undefined) {
+      $attrs.$set('mdComponentId', '_expander_id_' + (uid++));
+      registerPanel();
+    } else {
+      $attrs.$observe('mdComponentId', function() {
+        registerPanel();
+      });
+    }
 
 
     if ($attrs.mdExpanded !== undefined) {
@@ -97,9 +103,9 @@ function mdExpanderDirective($mdTheming, $parse) {
         if (newValue === _isOpen) { return; }
         var animate = expandedInited;
         if (newValue === true) {
-          open(animate, true);
+          show(animate, true);
         } else {
-          close(animate, true);
+          hide(animate, true);
         }
         expandedInited = true;
       });
@@ -115,8 +121,10 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     // register component
-    var destroy = $mdComponentRegistry.register(vm, $attrs.mdComponentId);
-    $element.on('$destroy', destroy);
+    function registerPanel() {
+      var destroy = $mdComponentRegistry.register(vm, $attrs.mdComponentId);
+      $element.on('$destroy', destroy);
+    }
 
 
     function registerExpanded(ctrl) {
@@ -128,7 +136,7 @@ function mdExpanderDirective($mdTheming, $parse) {
       toggle(_isOpen, animate, noUpdate);
     }
 
-    function close(animate, noUpdate) {
+    function hide(animate, noUpdate) {
       _isOpen = false;
       toggle(_isOpen, animate, noUpdate);
     }
@@ -209,9 +217,9 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
       scope.$mdOpen = value;
       $mdUtil.nextTick(function () {
         if (value === true) {
-          open();
+          show();
         } else {
-          close();
+          hide();
         }
       });
     }
@@ -219,7 +227,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
 
 
-    function open() {
+    function show() {
       element.addClass('md-show');
       element.addClass('md-overflow');
 
@@ -239,7 +247,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
     }
 
 
-    function close() {
+    function hide() {
       element.addClass('md-hide');
       element.removeClass('md-show');
       element.removeClass('md-scroll-y');
