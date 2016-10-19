@@ -16,11 +16,11 @@ angular
   * The `$mdExpander` service has functions to control the expander based on its `[md-component-id]` name
   *
   * <hljs lang="js">
-  *   angular.controller('MyCtrl', function ($scope, $bmdExpander) {
-  *     $mdExpander('expanderComponentId').expand();
-  *     $mdExpander('expanderComponentId').collapse();
+  *   angular.controller('MyCtrl', function ($scope, $mdExpander) {
+  *     $mdExpander('expanderComponentId').open();
+  *     $mdExpander('expanderComponentId').close();
   *     $mdExpander('expanderComponentId').toggle();
-  *     $mdExpander('expanderComponentId').isExpanded();
+  *     $mdExpander('expanderComponentId').isOpen();
   *   });
   * </hljs>
   */

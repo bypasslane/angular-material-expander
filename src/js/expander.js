@@ -14,9 +14,6 @@ angular
 function mdExpanderDirective($mdTheming, $parse) {
   var directive = {
     restrict: 'E',
-    // scope: {
-    //   mdExpanded: '?=mdExpanded'
-    // }
     compile: compile,
     controller: ExpanderController
   };
@@ -42,13 +39,13 @@ function mdExpanderDirective($mdTheming, $parse) {
 
     var expandedCtrl;
     var expandedGetter;
-    var collapsed = $element[0].querySelector('md-expander-collapsed');
+    var header = $element[0].querySelector('md-expander-header');
     var expanded = $element[0].querySelector('md-expander-expanded');
     if (expanded === null) {
       throw new Error('<md-expander> : Must contain <md-expander-expanded>');
     }
 
-    var _isExpanded = false;
+    var _isOpen = false;
     var listItemContainer = $element.parent();
     if (listItemContainer.hasClass('md-list-item-inner')) {
       listItemContainer.parent().addClass('layout-wrap');
@@ -57,9 +54,9 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     vm.height = $attrs.height;
-    vm.expand = expand;
-    vm.collapse = collapse;
-    vm.isExpanded = isExpanded;
+    vm.open = open;
+    vm.close = close;
+    vm.isOpen = isOpen;
     vm.registerExpanded = registerExpanded;
 
 
@@ -67,22 +64,22 @@ function mdExpanderDirective($mdTheming, $parse) {
       var expandedInited = false;
       expandedGetter = $parse($attrs.mdExpanded);
       $scope.$watch(function () { return expandedGetter($scope); }, function (newValue) {
-        if (newValue === _isExpanded) { return; }
+        if (newValue === _isOpen) { return; }
         var animate = expandedInited;
         if (newValue === true) {
-          expand(animate, true);
+          open(animate, true);
         } else {
-          collapse(animate, true);
+          close(animate, true);
         }
         expandedInited = true;
       });
     }
 
-    if (collapsed) {
-      angular.element(collapsed).on('click', function () {
-        _isExpanded = !_isExpanded;
+    if (header) {
+      angular.element(header).on('click', function () {
+        _isOpen = !_isOpen;
         $scope.$apply(function () {
-          toggle(_isExpanded);
+          toggle(_isOpen);
         });
       });
     }
@@ -97,13 +94,13 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     function expand(animate, noUpdate) {
-      _isExpanded = true;
-      toggle(_isExpanded, animate, noUpdate);
+      _isOpen = true;
+      toggle(_isOpen, animate, noUpdate);
     }
 
-    function collapse(animate, noUpdate) {
-      _isExpanded = false;
-      toggle(_isExpanded, animate, noUpdate);
+    function close(animate, noUpdate) {
+      _isOpen = false;
+      toggle(_isOpen, animate, noUpdate);
     }
 
     function toggle(value, animate, noUpdate) {
@@ -117,8 +114,8 @@ function mdExpanderDirective($mdTheming, $parse) {
       }
     }
 
-    function isExpanded() {
-      return _isExpanded;
+    function isOpen() {
+      return _isOpen;
     }
   }
 }

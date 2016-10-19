@@ -1,17 +1,17 @@
 angular
   .module('material.components.expander')
-  .directive('mdExpanderCollapsed', expanderCollapsedDirective);
+  .directive('mdExpanderHeader', expanderHeaderDirective);
 
 
 /**
  * @ngdoc directive
- * @name mdExpanderCollapsed
+ * @name mdExpanderHeader
  * @module material.components.expander
  *
  * @restrict E
  **/
  /*@ngInject*/
-function expanderCollapsedDirective() {
+function expanderHeaderDirective() {
   var directive = {
     restrict: 'E',
     compile: compile
@@ -19,6 +19,6 @@ function expanderCollapsedDirective() {
   return directive;
 
   function compile(tElement) {
-    tElement.addClass('md-expander-collapsed');
+    tElement.addClass('md-expander-header');
   }
 }

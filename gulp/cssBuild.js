@@ -27,11 +27,11 @@ exports.getDev = function (srcs) {
 exports.release = function () {
   return gulp.src(paths.css)
     .pipe(sass())
-    .pipe(concat('angular-material-exapnder.css'))
+    .pipe(concat('angular-material-expander.css'))
     .pipe(autoprefixer())
     .pipe(gulp.dest(paths.build))
     .pipe(cssnano())
-    .pipe(rename('angular-material-exapnder.min.css'))
+    .pipe(rename('angular-material-expander.min.css'))
     .pipe(gulp.dest(paths.build))
     .on('end', function(){
       gutil.log(gutil.colors.green('✔ CSS Build'), 'Finished');
