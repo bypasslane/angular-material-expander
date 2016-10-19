@@ -25,7 +25,7 @@ angular
   * </hljs>
   */
 /*@ngInject*/
-function mdExpanderService($mdComponentRegistry, $log) {
+function mdExpanderService($mdComponentRegistry, $log, $mdUtil) {
   var errorMsg = "mdExpander '{0}' is not available! Did you use md-component-id='{0}'?";
   var service = {
     find: findInstance,
