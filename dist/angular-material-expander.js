@@ -131,7 +131,7 @@ function mdExpanderDirective($mdTheming, $parse) {
       expandedCtrl = ctrl;
     }
 
-    function expand(animate, noUpdate) {
+    function show(animate, noUpdate) {
       _isOpen = true;
       toggle(_isOpen, animate, noUpdate);
     }
