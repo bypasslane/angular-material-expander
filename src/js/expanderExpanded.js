@@ -34,9 +34,9 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
       scope.$mdOpen = value;
       $mdUtil.nextTick(function () {
         if (value === true) {
-          open();
+          show();
         } else {
-          close();
+          hide();
         }
       });
     }
@@ -44,7 +44,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
 
 
-    function open() {
+    function show() {
       element.addClass('md-show');
       element.addClass('md-overflow');
 
@@ -64,7 +64,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
     }
 
 
-    function close() {
+    function hide() {
       element.addClass('md-hide');
       element.removeClass('md-show');
       element.removeClass('md-scroll-y');
