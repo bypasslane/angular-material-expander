@@ -19,7 +19,7 @@ function configExpanderTheme($mdThemingProvider, EXPANDER_THEME) {
 (function(){"use strict";angular.module("material.components.expander").run(["$templateCache", function($templateCache) {$templateCache.put("icons/ic_keyboard_arrow_right_black_24px.svg","<svg fill=\"#000000\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z\"/>\n    <path d=\"M0-.25h24v24H0z\" fill=\"none\"/>\n</svg>");}]);}());
 (function(){"use strict";angular.module("material.components.expander")
 
-.constant("EXPANDER_THEME", ".md-expander {\n  background: '{{background-hue-1}}'; }\n  .md-expander .md-expander-collapsed .md-title {\n    color: '{{foreground-1}}'; }\n  .md-expander .md-expander-collapsed .md-expander-icon svg {\n    fill: '{{foreground-3}}'; }\n")
+.constant("EXPANDER_THEME", ".md-expander {\n  background: '{{background-hue-1}}'; }\n  .md-expander .md-expander-header .md-title {\n    color: '{{foreground-1}}'; }\n  .md-expander .md-expander-header .md-expander-icon svg {\n    fill: '{{foreground-3}}'; }\n")
 
 ;}());
 (function(){"use strict";
@@ -40,9 +40,6 @@ function mdExpanderDirective($mdTheming, $parse) {
   ExpanderController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegistry"];
   var directive = {
     restrict: 'E',
-    // scope: {
-    //   mdExpanded: '?=mdExpanded'
-    // }
     compile: compile,
     controller: ExpanderController
   };
@@ -68,13 +65,13 @@ function mdExpanderDirective($mdTheming, $parse) {
 
     var expandedCtrl;
     var expandedGetter;
-    var collapsed = $element[0].querySelector('md-expander-collapsed');
+    var header = $element[0].querySelector('md-expander-header');
     var expanded = $element[0].querySelector('md-expander-expanded');
     if (expanded === null) {
       throw new Error('<md-expander> : Must contain <md-expander-expanded>');
     }
 
-    var _isExpanded = false;
+    var _isOpen = false;
     var listItemContainer = $element.parent();
     if (listItemContainer.hasClass('md-list-item-inner')) {
       listItemContainer.parent().addClass('layout-wrap');
@@ -83,9 +80,9 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     vm.height = $attrs.height;
-    vm.expand = expand;
-    vm.collapse = collapse;
-    vm.isExpanded = isExpanded;
+    vm.open = open;
+    vm.close = close;
+    vm.isOpen = isOpen;
     vm.registerExpanded = registerExpanded;
 
 
@@ -93,22 +90,22 @@ function mdExpanderDirective($mdTheming, $parse) {
       var expandedInited = false;
       expandedGetter = $parse($attrs.mdExpanded);
       $scope.$watch(function () { return expandedGetter($scope); }, function (newValue) {
-        if (newValue === _isExpanded) { return; }
+        if (newValue === _isOpen) { return; }
         var animate = expandedInited;
         if (newValue === true) {
-          expand(animate, true);
+          open(animate, true);
         } else {
-          collapse(animate, true);
+          close(animate, true);
         }
         expandedInited = true;
       });
     }
 
-    if (collapsed) {
-      angular.element(collapsed).on('click', function () {
-        _isExpanded = !_isExpanded;
+    if (header) {
+      angular.element(header).on('click', function () {
+        _isOpen = !_isOpen;
         $scope.$apply(function () {
-          toggle(_isExpanded);
+          toggle(_isOpen);
         });
       });
     }
@@ -123,13 +120,13 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     function expand(animate, noUpdate) {
-      _isExpanded = true;
-      toggle(_isExpanded, animate, noUpdate);
+      _isOpen = true;
+      toggle(_isOpen, animate, noUpdate);
     }
 
-    function collapse(animate, noUpdate) {
-      _isExpanded = false;
-      toggle(_isExpanded, animate, noUpdate);
+    function close(animate, noUpdate) {
+      _isOpen = false;
+      toggle(_isOpen, animate, noUpdate);
     }
 
     function toggle(value, animate, noUpdate) {
@@ -143,8 +140,8 @@ function mdExpanderDirective($mdTheming, $parse) {
       }
     }
 
-    function isExpanded() {
-      return _isExpanded;
+    function isOpen() {
+      return _isOpen;
     }
   }
 }
@@ -169,31 +166,6 @@ function mdExpanderArrowDirective() {
     replace: true
   };
   return directive;
-}
-}());
-(function(){"use strict";angular
-  .module('material.components.expander')
-  .directive('mdExpanderCollapsed', expanderCollapsedDirective);
-
-
-/**
- * @ngdoc directive
- * @name mdExpanderCollapsed
- * @module material.components.expander
- *
- * @restrict E
- **/
- /*@ngInject*/
-function expanderCollapsedDirective() {
-  var directive = {
-    restrict: 'E',
-    compile: compile
-  };
-  return directive;
-
-  function compile(tElement) {
-    tElement.addClass('md-expander-collapsed');
-  }
 }
 }());
 (function(){"use strict";
@@ -233,9 +205,9 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
       scope.$mdOpen = value;
       $mdUtil.nextTick(function () {
         if (value === true) {
-          expand();
+          open();
         } else {
-          collapse();
+          close();
         }
       });
     }
@@ -243,7 +215,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
 
 
-    function expand() {
+    function open() {
       element.addClass('md-show');
       element.addClass('md-overflow');
 
@@ -263,7 +235,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
     }
 
 
-    function collapse() {
+    function close() {
       element.addClass('md-hide');
       element.removeClass('md-show');
       element.removeClass('md-scroll-y');
@@ -288,6 +260,31 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
   }
 }
 }());
+(function(){"use strict";angular
+  .module('material.components.expander')
+  .directive('mdExpanderHeader', expanderHeaderDirective);
+
+
+/**
+ * @ngdoc directive
+ * @name mdExpanderHeader
+ * @module material.components.expander
+ *
+ * @restrict E
+ **/
+ /*@ngInject*/
+function expanderHeaderDirective() {
+  var directive = {
+    restrict: 'E',
+    compile: compile
+  };
+  return directive;
+
+  function compile(tElement) {
+    tElement.addClass('md-expander-header');
+  }
+}
+}());
 (function(){"use strict";
 mdExpanderService.$inject = ["$mdComponentRegistry", "$log"];angular
   .module('material.components.expander')
@@ -307,11 +304,11 @@ mdExpanderService.$inject = ["$mdComponentRegistry", "$log"];angular
   * The `$mdExpander` service has functions to control the expander based on its `[md-component-id]` name
   *
   * <hljs lang="js">
-  *   angular.controller('MyCtrl', function ($scope, $bmdExpander) {
-  *     $mdExpander('expanderComponentId').expand();
-  *     $mdExpander('expanderComponentId').collapse();
+  *   angular.controller('MyCtrl', function ($scope, $mdExpander) {
+  *     $mdExpander('expanderComponentId').open();
+  *     $mdExpander('expanderComponentId').close();
   *     $mdExpander('expanderComponentId').toggle();
-  *     $mdExpander('expanderComponentId').isExpanded();
+  *     $mdExpander('expanderComponentId').isOpen();
   *   });
   * </hljs>
   */
