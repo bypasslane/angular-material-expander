@@ -27,7 +27,7 @@ mdExpanderDirective.$inject = ["$mdTheming", "$parse"];angular
   .module('material.components.expander')
   .directive('mdExpander', mdExpanderDirective);
 
-
+var uid = 0;
 /**
  * @ngdoc directive
  * @name mdExpander
@@ -50,6 +50,10 @@ function mdExpanderDirective($mdTheming, $parse) {
     tElement.addClass('md-expander');
     if (tAttrs.width !== undefined) {
       tElement.css('width', tAttrs.width.replace('px', '') + 'px');
+    }
+
+    if (tAttrs.mdComponentId === undefined) {
+      tElement.attr('md-component-id', '_expander_id_'+(uid++));
     }
 
     return function postLink(scope, element, attr) {
