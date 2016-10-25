@@ -46,10 +46,10 @@ function mdExpanderDirective($mdTheming, $parse) {
     }
 
     var _isOpen = false;
-    var listItemContainer = $element.parent();
-    if (listItemContainer.hasClass('md-list-item-inner')) {
-      listItemContainer.parent().addClass('layout-wrap');
-      listItemContainer.parent().append($element);
+    var listItemContainer = findListItem($element);
+    if (listItemContainer) {
+      listItemContainer.addClass('layout-wrap');
+      listItemContainer.append($element);
       $element.css('width', '100%');
     }
 
@@ -128,6 +128,18 @@ function mdExpanderDirective($mdTheming, $parse) {
 
     function isOpen() {
       return _isOpen;
+    }
+
+    function findListItem(el) {
+      var parent = el[0].parentNode;
+      while (parent && parent !== document.body) {
+        if (parent.nodeName === 'MD-LIST-ITEM') {
+          return angular.element(parent);
+        }
+        parent = parent.parentNode;
+      }
+
+      return undefined;
     }
   }
 }
