@@ -39,6 +39,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
         } else {
           hide();
         }
+        isAnimatedOpen = value;
       });
     }
 
