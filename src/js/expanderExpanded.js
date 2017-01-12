@@ -23,6 +23,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
   function link(scope, element, attr, expanderCtrl) {
     var isHeightSet = expanderCtrl.height !== undefined;
+    console.log('===isHeightSet===', isHeightSet);
     var height = isHeightSet ? expanderCtrl.height.replace('px', '') + 'px' : undefined;
     element.addClass('md-expander-expanded');
     expanderCtrl.registerExpanded({
@@ -54,7 +55,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
       })
       .start()
       .then(function () {
-        if (isHeightSet !== undefined) {
+        if (isHeightSet === true) {
           element.addClass('md-scroll-y');
         } else {
           element.css('max-height', 'none');
