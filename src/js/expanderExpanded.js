@@ -23,7 +23,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
   function link(scope, element, attr, expanderCtrl) {
     var isHeightSet = expanderCtrl.height !== undefined;
-    console.log('===isHeightSet===', isHeightSet);
+    var isAnimatedOpen = false;
     var height = isHeightSet ? expanderCtrl.height.replace('px', '') + 'px' : undefined;
     element.addClass('md-expander-expanded');
     expanderCtrl.registerExpanded({
@@ -46,6 +46,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
 
     function show() {
+      if (isAnimatedOpen) { return; }
       element.addClass('md-show');
       element.addClass('md-overflow');
 
@@ -66,6 +67,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
 
     function hide() {
+      if (!isAnimatedOpen) { return; }
       element.addClass('md-hide');
       element.removeClass('md-show');
       element.removeClass('md-scroll-y');
