@@ -1,6 +1,7 @@
 machine:
   node:
     version: 6.1.0
-general:
-  artifacts:
-    - "coverage"
+dependencies:
+  override:
+    - npm install
+    - npm rebuild node-sass
