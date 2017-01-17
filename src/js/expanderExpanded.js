@@ -23,6 +23,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
   function link(scope, element, attr, expanderCtrl) {
     var isHeightSet = expanderCtrl.height !== undefined;
+    var isAnimatedOpen = false;
     var height = isHeightSet ? expanderCtrl.height.replace('px', '') + 'px' : undefined;
     element.addClass('md-expander-expanded');
     expanderCtrl.registerExpanded({
@@ -38,13 +39,12 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
         } else {
           hide();
         }
+        isAnimatedOpen = value;
       });
     }
 
-
-
-
     function show() {
+      if (isAnimatedOpen) { return; }
       element.addClass('md-show');
       element.addClass('md-overflow');
 
@@ -54,7 +54,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
       })
       .start()
       .then(function () {
-        if (isHeightSet !== undefined) {
+        if (isHeightSet === true) {
           element.addClass('md-scroll-y');
         } else {
           element.css('max-height', 'none');
@@ -65,6 +65,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
 
     function hide() {
+      if (!isAnimatedOpen) { return; }
       element.addClass('md-hide');
       element.removeClass('md-show');
       element.removeClass('md-scroll-y');
