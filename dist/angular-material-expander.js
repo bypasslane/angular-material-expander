@@ -16,7 +16,7 @@ function configExpanderTheme($mdThemingProvider, EXPANDER_THEME) {
   $mdThemingProvider.registerStyles(EXPANDER_THEME);
 }
 }());
-(function(){"use strict";angular.module("material.components.expander").run(["$templateCache", function($templateCache) {$templateCache.put("icons/ic_keyboard_arrow_right_black_24px.svg","<svg fill=\"#000000\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z\"/>\n    <path d=\"M0-.25h24v24H0z\" fill=\"none\"/>\n</svg>");}]);}());
+(function(){"use strict";angular.module('material.components.expander').run(['$templateCache', function($templateCache) {$templateCache.put('icons/ic_keyboard_arrow_right_black_24px.svg','<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">\n    <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/>\n    <path d="M0-.25h24v24H0z" fill="none"/>\n</svg>');}]);}());
 (function(){"use strict";angular.module("material.components.expander")
 
 .constant("EXPANDER_THEME", ".md-expander {\n  background: '{{background-hue-1}}'; }\n  .md-expander .md-expander-header .md-title {\n    color: '{{foreground-1}}'; }\n  .md-expander .md-expander-header .md-expander-icon svg {\n    fill: '{{foreground-3}}'; }\n")
@@ -218,6 +218,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
   function link(scope, element, attr, expanderCtrl) {
     var isHeightSet = expanderCtrl.height !== undefined;
+    var isAnimatedOpen = false;
     var height = isHeightSet ? expanderCtrl.height.replace('px', '') + 'px' : undefined;
     element.addClass('md-expander-expanded');
     expanderCtrl.registerExpanded({
@@ -233,13 +234,12 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
         } else {
           hide();
         }
+        isAnimatedOpen = value;
       });
     }
 
-
-
-
     function show() {
+      if (isAnimatedOpen) { return; }
       element.addClass('md-show');
       element.addClass('md-overflow');
 
@@ -249,7 +249,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
       })
       .start()
       .then(function () {
-        if (isHeightSet !== undefined) {
+        if (isHeightSet === true) {
           element.addClass('md-scroll-y');
         } else {
           element.css('max-height', 'none');
@@ -260,6 +260,7 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
 
 
     function hide() {
+      if (!isAnimatedOpen) { return; }
       element.addClass('md-hide');
       element.removeClass('md-show');
       element.removeClass('md-scroll-y');
