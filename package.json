@@ -45,7 +45,9 @@
     "through2": "^2.0.1"
   },
   "scripts": {
+    "postinstall": "bower install",
     "local": "gulp",
-    "build": "gulp build"
+    "build": "gulp build",
+    "test": "gulp test"
   }
 }
