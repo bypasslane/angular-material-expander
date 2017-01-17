@@ -51,7 +51,7 @@ exports.release = function () {
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     .pipe(concat('angular-material-expander.js'))
-    // .pipe(stripDebug())
+    .pipe(stripDebug())
     .pipe(ngAnnotate())
     .pipe(gulp.dest(paths.build))
     .pipe(uglify())

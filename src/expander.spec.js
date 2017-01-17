@@ -1,4 +1,4 @@
-describe('Expander', function () {
+describe('material.components.expander', function () {
   var expander,
       $mdUtil,
       $mdExpander,
