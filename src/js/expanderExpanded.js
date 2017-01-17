@@ -43,9 +43,6 @@ function mdExpanderExpandedDirective($mdUtil, $animateCss) {
       });
     }
 
-
-
-
     function show() {
       if (isAnimatedOpen) { return; }
       element.addClass('md-show');

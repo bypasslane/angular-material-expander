@@ -14,15 +14,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'dist/md-calendar.css',
       'bower_components/angular-material/angular-material.css',
-
+      'dist/angular-material-expander.css',
       'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-material/angular-material.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'src/mdCalendar.js',
-      'src/**/*.js'
+      'dist/angular-material-expander.js',
+      'src/**/*spec.js'
     ],
 
 
