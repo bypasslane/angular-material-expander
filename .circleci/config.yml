@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/angular-material-expander
     docker:
-      - image: circleci/node:8-jessie-browsers
+      - image: circleci/node:6-jessie-browsers
         environment:
           NODE_ENV: test
     steps:
