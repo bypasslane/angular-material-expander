@@ -9,7 +9,9 @@ jobs:
     steps:
       - checkout
 
+      - run: npm install bower
       - run: npm install
+
       - run: npm rebuild node-sass
 
       - run: npm test
